@@ -87,7 +87,10 @@
             "ts"
         ],
         "rootDir": ".",
-        "testRegex": ".*\\.(spec|e2e-spec)\\.ts$",
+        "testMatch": [
+            "**/test/**/*.(spec|e2e-spec).ts",
+            "**/*.(spec|e2e-spec).ts"
+        ],
         "transform": {
             "^.+\\.(t|j)s$": "ts-jest"
         },
@@ -106,10 +109,6 @@
         ],
         "moduleNameMapper": {
             "^@app/(.*)$": "<rootDir>/libs/$1/src"
-        },
-        "testMatch": [
-            "**/test/**/*.(spec|e2e-spec).ts",
-            "**/*.(spec|e2e-spec).ts"
-        ]
+        }
     }
 }
