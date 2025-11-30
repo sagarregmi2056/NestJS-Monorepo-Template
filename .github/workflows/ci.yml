@@ -113,12 +113,18 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Set image tag
+        id: image
+        run: |
+          REPO_NAME=$(echo "${{ github.event.repository.name }}" | tr '[:upper:]' '[:lower:]')
+          echo "tag=ghcr.io/${{ github.repository_owner }}/$REPO_NAME:latest" >> $GITHUB_OUTPUT
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
-          tags: ghcr.io/${{ github.repository }}:latest
+          tags: ${{ steps.image.outputs.tag }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
