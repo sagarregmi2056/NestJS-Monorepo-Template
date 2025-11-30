@@ -861,25 +861,30 @@ flowchart LR
     Start --> TypeCheck[Type Check]
     Start --> Security[Security Audit]
     
-    Lint --> Build{Lint Pass?}
+    Lint --> Build{All Pass?}
     Test --> Build
     TypeCheck --> Build
     Security --> Build
     
-    Build -->|Yes| Docker[Build Docker]
+    Build -->|Yes| Docker[Build & Push Docker]
     Build -->|No| Fail[❌ Fail]
     
-    Docker --> Success[✅ Success]
+    Docker --> GHCR[Push to GHCR]
+    GHCR --> Success[✅ Success]
     
-    style Start fill:#e3f2fd
-    style Lint fill:#fff3e0
-    style Test fill:#fff3e0
-    style TypeCheck fill:#fff3e0
-    style Security fill:#fff3e0
-    style Build fill:#f3e5f5
-    style Docker fill:#e8f5e9
-    style Success fill:#4caf50,color:#fff
-    style Fail fill:#f44336,color:#fff
+    classDef trigger fill:#2563eb,color:#fff,stroke:#1e40af,stroke-width:2px
+    classDef check fill:#7c3aed,color:#fff,stroke:#6d28d9,stroke-width:2px
+    classDef build fill:#059669,color:#fff,stroke:#047857,stroke-width:2px
+    classDef registry fill:#f59e0b,color:#fff,stroke:#d97706,stroke-width:2px
+    classDef success fill:#10b981,color:#fff,stroke:#059669,stroke-width:2px
+    classDef fail fill:#ef4444,color:#fff,stroke:#dc2626,stroke-width:2px
+    
+    class Start trigger
+    class Lint,Test,TypeCheck,Security check
+    class Build,Docker build
+    class GHCR registry
+    class Success success
+    class Fail fail
 ```
 
 ### Pipeline Jobs
@@ -889,7 +894,7 @@ flowchart LR
 | **Lint** | ESLint code quality checks | Node 20 |
 | **Test** | Unit & E2E tests with coverage | Node 18 & 20 |
 | **Build** | Compile all applications | Node 20 |
-| **Docker** | Build Docker images | Node 20 (main/develop only) |
+| **Docker** | Build & push Docker images to GHCR | Node 20 (main/develop only) |
 | **Security** | npm audit for vulnerabilities | Node 20 |
 | **Type Check** | TypeScript compilation check | Node 20 |
 
@@ -900,7 +905,7 @@ sequenceDiagram
     participant Dev as Developer
     participant GH as GitHub
     participant CI as CI Pipeline
-    participant Docker as Docker Registry
+    participant GHCR as GitHub Container Registry
     
     Dev->>GH: Push Code / Create PR
     GH->>CI: Trigger Pipeline
@@ -914,7 +919,9 @@ sequenceDiagram
     
     CI->>CI: Build Applications
     alt All Checks Pass
-        CI->>Docker: Build Docker Images (main/develop)
+        CI->>CI: Build Docker Image
+        CI->>GHCR: Push to ghcr.io (main/develop)
+        GHCR-->>CI: Image Published
         CI->>GH: ✅ Pipeline Success
     else Checks Fail
         CI->>GH: ❌ Pipeline Failed
@@ -930,6 +937,7 @@ sequenceDiagram
 - ✅ **Security** - npm audit for vulnerabilities
 - ✅ **Coverage Reports** - Code coverage with Codecov integration
 - ✅ **Docker Builds** - Automatic Docker image building
+- ✅ **Container Registry** - Automatic push to GitHub Container Registry (GHCR)
 - ✅ **Multi-Node Testing** - Tests on multiple Node.js versions
 
 ### Pipeline Status Badge
@@ -937,7 +945,7 @@ sequenceDiagram
 Add this to your README to show pipeline status:
 
 ```markdown
-![CI/CD Pipeline](https://github.com/your-username/nestjs-monorepo-template/workflows/CI%2FCD%20Pipeline/badge.svg)
+![CI/CD Pipeline](https://github.com/sagarregmi2056/nestjs-monorepo-template/workflows/CI%2FCD%20Pipeline/badge.svg)
 ```
 
 ### Configuration
@@ -947,7 +955,11 @@ The CI/CD pipeline is configured in `.github/workflows/ci.yml`. Key features:
 - **Triggers**: Push to `main`/`develop` or Pull Requests
 - **Caching**: npm cache for faster builds
 - **Matrix Strategy**: Tests on multiple Node.js versions
-- **Conditional Docker**: Only builds on main/develop branches
+- **Conditional Docker**: Only builds and pushes on main/develop branches
+- **Container Registry**: Automatically pushes to GitHub Container Registry (GHCR)
+  - Image location: `ghcr.io/your-username/nestjs-monorepo-template:latest`
+  - Access: View packages in your GitHub repository's Packages section
+  - Pull command: `docker pull ghcr.io/your-username/nestjs-monorepo-template:latest`
 
 ### Local Testing
 
