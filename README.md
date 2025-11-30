@@ -1,5 +1,7 @@
 # NestJS Monorepo Template
 
+![CI/CD Pipeline](https://github.com/sagarregmi2056/nestjs-monorepo-template/workflows/CI%2FCD%20Pipeline/badge.svg)
+
 A professional, production-ready NestJS monorepo template with flexible database abstraction, shared libraries, and best practices.
 
 ## 🏗️ Architecture
@@ -942,7 +944,8 @@ sequenceDiagram
 
 ### Pipeline Status Badge
 
-Add this to your README to show pipeline status:
+
+
 
 ```markdown
 ![CI/CD Pipeline](https://github.com/sagarregmi2056/nestjs-monorepo-template/workflows/CI%2FCD%20Pipeline/badge.svg)
