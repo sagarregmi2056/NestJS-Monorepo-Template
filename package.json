@@ -48,7 +48,9 @@
         "helmet": "^7.1.0",
         "compression": "^1.7.4",
         "express-rate-limit": "^7.4.1",
-        "bcryptjs": "^2.4.3"
+        "bcryptjs": "^2.4.3",
+        "@nestjs/swagger": "^7.4.2",
+        "swagger-ui-express": "^5.0.1"
     },
     "devDependencies": {
         "@nestjs/cli": "^10.4.5",
@@ -61,6 +63,7 @@
         "@types/supertest": "^6.0.2",
         "@types/compression": "^1.7.5",
         "@types/bcryptjs": "^2.4.6",
+        "@types/swagger-ui-express": "^4.1.6",
         "@typescript-eslint/eslint-plugin": "^8.20.0",
         "@typescript-eslint/parser": "^8.20.0",
         "concurrently": "^9.2.1",

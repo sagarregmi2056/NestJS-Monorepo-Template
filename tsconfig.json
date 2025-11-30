@@ -41,6 +41,12 @@
             ],
             "@app/security/*": [
                 "libs/security/src/*"
+            ],
+            "@app/swagger": [
+                "libs/swagger/src"
+            ],
+            "@app/swagger/*": [
+                "libs/swagger/src/*"
             ]
         }
     }

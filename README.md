@@ -50,7 +50,7 @@ flowchart TB
     class DB,Config,Common lib
 ```
 
-📊 **More Diagrams**: See [ARCHITECTURE_DIAGRAM.md](./ARCHITECTURE_DIAGRAM.md) for detailed architecture diagrams.
+📊 **More Diagrams**: See [docs/ARCHITECTURE_DIAGRAM.md](./docs/ARCHITECTURE_DIAGRAM.md) for detailed architecture diagrams.
 
 ## 📁 Project Structure
 
@@ -118,10 +118,11 @@ npm run start:dev admin           # Port 3002
 ### **api-server**
 Main REST API server for handling HTTP requests.
 
-**Port:** 3000 (configurable)
+**Port:** 3001 (configurable via `API_SERVER_PORT`)
 
 **Features:**
 - REST API endpoints
+- Swagger/OpenAPI documentation (`/api-docs`)
 - Authentication/Authorization
 - Request validation
 - Error handling
@@ -138,7 +139,7 @@ Background worker for processing jobs, queues, etc.
 - Daily cleanup tasks
 - Periodic health checks
 
-See [apps/worker/WORKER_EXAMPLES.md](./apps/worker/WORKER_EXAMPLES.md) for detailed examples.
+See [docs/WORKER_EXAMPLES.md](./docs/WORKER_EXAMPLES.md) for detailed examples.
 
 ### **websocket-service**
 Real-time WebSocket service for live updates.
@@ -153,10 +154,11 @@ Real-time WebSocket service for live updates.
 ### **admin**
 Admin panel for managing the application.
 
-**Port:** 3002 (configurable via `ADMIN_PORT`)
+**Port:** 3003 (configurable via `ADMIN_PORT`)
 
 **Features:**
 - Admin dashboard
+- Swagger/OpenAPI documentation
 - User management
 - System configuration
 - Health monitoring
@@ -247,9 +249,9 @@ Each app runs on its own port:
 
 | App | Default Port | Environment Variable |
 |-----|-------------|---------------------|
-| api-server | 3000 | `API_SERVER_PORT` |
-| websocket-service | 3001 | `WEBSOCKET_PORT` |
-| admin | 3002 | `ADMIN_PORT` |
+| api-server | 3001 | `API_SERVER_PORT` |
+| websocket-service | 3002 | `WEBSOCKET_PORT` |
+| admin | 3003 | `ADMIN_PORT` |
 
 **⚠️ Important:** If you set `PORT=5001` for all apps, you'll get port conflicts! Always use app-specific ports.
 
@@ -264,15 +266,20 @@ See [PORT_CONFIGURATION.md](./PORT_CONFIGURATION.md) for detailed guide and [POR
 
 ## 📖 Documentation
 
-- **[Quick Start Guide](./QUICK_START.md)** - Get started in 5 minutes
-- **[Running All Apps](./RUNNING_ALL_APPS.md)** - How to run all apps simultaneously
-- **[Security Middleware](./SECURITY_MIDDLEWARE.md)** - Production-ready security middleware guide
-- **[Admin Seeding](./ADMIN_SEEDING.md)** - Admin user seeding guide
-- **[Architecture Diagrams](./ARCHITECTURE_DIAGRAM.md)** - Visual architecture diagrams
-- **[Architecture Overview](./ARCHITECTURE.md)** - Detailed architecture explanation
-- **[Database Switching Guide](./DATABASE_SWITCHING_GUIDE.md)** - How to switch databases
-- **[Port Configuration](./PORT_CONFIGURATION.md)** - How to configure ports for each app
-- **[Template Features](./TEMPLATE_FEATURES.md)** - Complete feature list
+All documentation is organized in the [`docs/`](./docs/) folder:
+
+- **[Quick Start Guide](./docs/QUICK_START.md)** - Get started in 5 minutes
+- **[Running All Apps](./docs/RUNNING_ALL_APPS.md)** - How to run all apps simultaneously
+- **[Security Middleware](./docs/SECURITY_MIDDLEWARE.md)** - Production-ready security middleware guide
+- **[Rate Limiting Guide](./docs/RATE_LIMITING_GUIDE.md)** - Selective rate limiting guide
+- **[Admin Seeding](./docs/ADMIN_SEEDING.md)** - Admin user seeding guide
+- **[Architecture Diagrams](./docs/ARCHITECTURE_DIAGRAM.md)** - Visual architecture diagrams
+- **[Architecture Overview](./docs/ARCHITECTURE.md)** - Detailed architecture explanation
+- **[Database Switching Guide](./docs/DATABASE_SWITCHING_GUIDE.md)** - How to switch databases
+- **[Port Configuration](./docs/PORT_CONFIGURATION.md)** - How to configure ports for each app
+- **[Template Features](./docs/TEMPLATE_FEATURES.md)** - Complete feature list
+- **[Worker Examples](./docs/WORKER_EXAMPLES.md)** - Worker service examples
+- **[Swagger Guide](./docs/SWAGGER_GUIDE.md)** - API documentation guide
 
 ## 🔐 Environment Variables
 

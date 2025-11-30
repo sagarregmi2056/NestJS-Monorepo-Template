@@ -3,6 +3,7 @@ import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { AppModule } from './app.module';
 import { HttpExceptionFilter } from '@app/common';
+import { setupSwagger } from '@app/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -31,8 +32,11 @@ async function bootstrap() {
   const corsConfig = configService.get('app.cors');
   app.enableCors(corsConfig);
 
-  // Port priority: API_SERVER_PORT > PORT > 3000
-  const port = parseInt(process.env.API_SERVER_PORT || process.env.PORT || '3000', 10);
+  // Swagger documentation (dev only, or if ENABLE_SWAGGER=true)
+  setupSwagger(app);
+
+  // Port priority: API_SERVER_PORT > PORT > 3001
+  const port = parseInt(process.env.API_SERVER_PORT || process.env.PORT || '3001', 10);
   await app.listen(port);
 
   console.log(`🚀 Application is running on: http://localhost:${port}/${apiPrefix}`);
