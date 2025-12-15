@@ -1,7 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { DbModule } from '@app/db';
-import { databaseConfig } from '@app/configuration';
+import { CacheModule } from '@app/cache';
+import { databaseConfig, cacheConfig } from '@app/configuration';
 import { TasksModule } from './tasks/tasks.module';
 
 @Module({
@@ -9,12 +10,15 @@ import { TasksModule } from './tasks/tasks.module';
     // Configuration
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [databaseConfig],
+      load: [databaseConfig, cacheConfig],
       envFilePath: ['.env.local', '.env'],
     }),
 
     // Database
     DbModule.forRoot(),
+
+    // Cache (for distributed locking)
+    CacheModule.forRoot(),
 
     // Feature modules
     TasksModule,

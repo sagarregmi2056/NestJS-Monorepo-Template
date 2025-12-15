@@ -1,5 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
+import { DistributedLock } from '@app/common';
 
 /**
  * Tasks Service - Example Worker Tasks
@@ -30,6 +31,7 @@ export class TasksService {
    * Use cases: Clean old logs, archive data, delete expired sessions
    */
   @Cron('0 2 * * *') // Every day at 2:00 AM
+  @DistributedLock({ key: 'daily-cleanup', ttl: 3600 }) // Lock for 1 hour
   async handleDailyCleanup() {
     this.logger.log('Starting daily cleanup task...');
     try {
@@ -50,6 +52,7 @@ export class TasksService {
    * Use cases: Send reports, sync data, process pending items
    */
   @Cron(CronExpression.EVERY_HOUR)
+  @DistributedLock({ key: 'hourly-task', ttl: 300 }) // Lock for 5 minutes
   async handleHourlyTask() {
     this.logger.log('Running hourly task...');
     try {
@@ -68,6 +71,7 @@ export class TasksService {
    * Use cases: Generate weekly reports, send summaries
    */
   @Cron('0 9 * * 1') // Every Monday at 9:00 AM
+  @DistributedLock({ key: 'weekly-report', ttl: 1800 }) // Lock for 30 minutes
   async handleWeeklyReport() {
     this.logger.log('Generating weekly report...');
     try {
