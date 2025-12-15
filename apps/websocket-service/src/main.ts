@@ -1,8 +1,10 @@
 import { NestFactory } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
+import { Logger } from '@nestjs/common';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
+  const logger = new Logger('Bootstrap');
   const app = await NestFactory.create(AppModule);
   const configService = app.get(ConfigService);
 
@@ -14,8 +16,8 @@ async function bootstrap() {
   const port = parseInt(process.env.WEBSOCKET_PORT || process.env.PORT || '3001', 10);
   await app.listen(port);
 
-  console.log(`🚀 WebSocket service is running on: http://localhost:${port}`);
-  console.log(`📡 WebSocket gateway available at: ws://localhost:${port}`);
+  logger.log(`WebSocket service is running on: http://localhost:${port}`);
+  logger.log(`WebSocket gateway available at: ws://localhost:${port}`);
 }
 
 bootstrap();

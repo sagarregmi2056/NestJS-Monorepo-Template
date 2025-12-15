@@ -44,10 +44,10 @@ export class CacheModule {
 
             // Log cache configuration
             if (config.enabled) {
-              CacheModule.logger.log(`🔴 Redis cache enabled: ${config.host}:${config.port}`);
+              CacheModule.logger.log(`Redis cache enabled: ${config.host}:${config.port}`);
               CacheModule.logger.log(`   TTL: ${config.ttl}s | Prefix: ${config.keyPrefix}`);
             } else {
-              CacheModule.logger.log('💾 In-memory cache enabled (Redis disabled)');
+              CacheModule.logger.log('In-memory cache enabled (Redis disabled)');
               CacheModule.logger.log(`   TTL: ${config.ttl}s | Max items: ${config.max || 100}`);
             }
 
@@ -65,7 +65,7 @@ export class CacheModule {
                   redisConfig.password = config.password;
                 }
 
-                CacheModule.logger.log(`✅ Connecting to Redis at ${config.host}:${config.port}...`);
+                CacheModule.logger.log(`Connecting to Redis at ${config.host}:${config.port}...`);
 
                 return {
                   store: redisStore,
@@ -73,7 +73,7 @@ export class CacheModule {
                   ttl: config.ttl, // cache-manager-redis-store uses seconds
                 };
               } catch (error) {
-                CacheModule.logger.warn(`⚠️  Failed to connect to Redis, falling back to in-memory cache: ${error instanceof Error ? error.message : error}`);
+                CacheModule.logger.warn(`Failed to connect to Redis, falling back to in-memory cache: ${error instanceof Error ? error.message : error}`);
                 // Fall back to in-memory cache
                 return {
                   ttl: config.ttl * 1000,
@@ -83,7 +83,7 @@ export class CacheModule {
             }
 
             // Use in-memory cache
-            CacheModule.logger.log('💾 Using in-memory cache');
+            CacheModule.logger.log('Using in-memory cache');
             return {
               ttl: config.ttl * 1000, // Convert to milliseconds
               max: config.max || 100,

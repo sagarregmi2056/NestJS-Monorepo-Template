@@ -1,5 +1,6 @@
 import { plainToInstance } from 'class-transformer';
 import { IsEnum, IsNotEmpty, IsString, validateSync } from 'class-validator';
+import { Logger } from '@nestjs/common';
 
 enum Environment {
   Development = 'development',
@@ -55,7 +56,7 @@ export function validateEnv(config: Record<string, unknown>) {
       .join('; ');
 
     throw new Error(
-      `❌ Environment validation failed:\n${missingVars}\n\n` +
+      `Environment validation failed:\n${missingVars}\n\n` +
         `Please check your .env file and ensure all required variables are set.\n` +
         `See .env.example for reference.`,
     );
@@ -86,7 +87,7 @@ export function validateEnvByNodeEnv(env: Record<string, unknown>) {
 
     if (missing.length > 0) {
       throw new Error(
-        `❌ Missing required environment variables in production:\n` +
+        `Missing required environment variables in production:\n` +
           `${missing.join(', ')}\n\n` +
           `These variables are required for production deployment.`,
       );
@@ -105,8 +106,9 @@ export function validateEnvByNodeEnv(env: Record<string, unknown>) {
     }
 
     if (warnings.length > 0) {
-      console.warn(
-        `⚠️  Production warnings:\n${warnings.join('\n')}\n` +
+      const logger = new Logger('EnvValidation');
+      logger.warn(
+        `Production warnings:\n${warnings.join('\n')}\n` +
           `Please review your environment configuration.`,
       );
     }

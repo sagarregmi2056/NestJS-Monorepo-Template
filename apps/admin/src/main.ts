@@ -1,11 +1,12 @@
 import { NestFactory } from '@nestjs/core';
-import { ValidationPipe } from '@nestjs/common';
+import { ValidationPipe, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { AppModule } from './app.module';
 import { HttpExceptionFilter } from '@app/common';
 import { setupSwagger } from '@app/swagger';
 
 async function bootstrap() {
+  const logger = new Logger('Bootstrap');
   const app = await NestFactory.create(AppModule);
   const configService = app.get(ConfigService);
 
@@ -38,9 +39,9 @@ async function bootstrap() {
   const port = parseInt(process.env.ADMIN_PORT || process.env.PORT || '3003', 10);
   await app.listen(port);
 
-  console.log(`🚀 Admin panel is running on: http://localhost:${port}/admin`);
-  console.log(`📊 Environment: ${configService.get<string>('app.env')}`);
-  console.log(`💾 Database: ${configService.get<string>('database.type')}`);
+  logger.log(`Admin panel is running on: http://localhost:${port}/admin`);
+  logger.log(`Environment: ${configService.get<string>('app.env')}`);
+  logger.log(`Database: ${configService.get<string>('database.type')}`);
 }
 
 bootstrap();

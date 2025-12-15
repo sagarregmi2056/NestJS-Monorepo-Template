@@ -66,10 +66,10 @@ export class AdminSeedService implements OnModuleInit {
 
       await admin.save();
 
-      this.logger.log(`✅ Default admin user created successfully`);
-      this.logger.warn(`📧 Email: ${adminEmail}`);
-      this.logger.warn(`🔑 Password: ${adminPassword}`);
-      this.logger.warn(`⚠️  Please change the default password after first login!`);
+      this.logger.log(`Default admin user created successfully`);
+      this.logger.warn(`Email: ${adminEmail}`);
+      this.logger.warn(`Password: ${adminPassword}`);
+      this.logger.warn(`Please change the default password after first login!`);
     } catch (error) {
       this.logger.error(`Failed to seed admin user: ${error.message}`);
     }

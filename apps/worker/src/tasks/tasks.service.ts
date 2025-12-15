@@ -20,7 +20,7 @@ export class TasksService {
    */
   @Cron(CronExpression.EVERY_30_SECONDS)
   handlePeriodicTask() {
-    this.logger.debug('⏰ Running periodic task every 30 seconds...');
+    this.logger.debug('Running periodic task every 30 seconds...');
     // Example: Check system health, update cache, etc.
     this.checkSystemHealth();
   }
@@ -31,7 +31,7 @@ export class TasksService {
    */
   @Cron('0 2 * * *') // Every day at 2:00 AM
   async handleDailyCleanup() {
-    this.logger.log('🧹 Starting daily cleanup task...');
+    this.logger.log('Starting daily cleanup task...');
     try {
       // Example: Clean old logs
       await this.cleanOldLogs();
@@ -39,9 +39,9 @@ export class TasksService {
       // Example: Archive old data
       await this.archiveOldData();
       
-      this.logger.log('✅ Daily cleanup completed');
+      this.logger.log('Daily cleanup completed');
     } catch (error) {
-      this.logger.error(`❌ Daily cleanup failed: ${error.message}`);
+      this.logger.error(`Daily cleanup failed: ${error.message}`);
     }
   }
 
@@ -51,7 +51,7 @@ export class TasksService {
    */
   @Cron(CronExpression.EVERY_HOUR)
   async handleHourlyTask() {
-    this.logger.log('⏰ Running hourly task...');
+    this.logger.log('Running hourly task...');
     try {
       // Example: Process pending notifications
       await this.processPendingNotifications();
@@ -59,7 +59,7 @@ export class TasksService {
       // Example: Sync external data
       await this.syncExternalData();
     } catch (error) {
-      this.logger.error(`❌ Hourly task failed: ${error.message}`);
+      this.logger.error(`Hourly task failed: ${error.message}`);
     }
   }
 
@@ -69,13 +69,13 @@ export class TasksService {
    */
   @Cron('0 9 * * 1') // Every Monday at 9:00 AM
   async handleWeeklyReport() {
-    this.logger.log('📊 Generating weekly report...');
+    this.logger.log('Generating weekly report...');
     try {
       const report = await this.generateWeeklyReport();
       await this.sendWeeklyReport(report);
-      this.logger.log('✅ Weekly report sent');
+      this.logger.log('Weekly report sent');
     } catch (error) {
-      this.logger.error(`❌ Weekly report failed: ${error.message}`);
+      this.logger.error(`Weekly report failed: ${error.message}`);
     }
   }
 
@@ -89,7 +89,7 @@ export class TasksService {
     const memoryMB = Math.round(memoryUsage.heapUsed / 1024 / 1024);
     
     if (memoryMB > 500) {
-      this.logger.warn(`⚠️ High memory usage: ${memoryMB}MB`);
+      this.logger.warn(`High memory usage: ${memoryMB}MB`);
     }
     
     // Example: Check database connection, external services, etc.
@@ -107,7 +107,7 @@ export class TasksService {
     
     // Simulate async operation
     await new Promise(resolve => setTimeout(resolve, 100));
-    this.logger.log('✅ Old logs cleaned');
+    this.logger.log('Old logs cleaned');
   }
 
   /**
@@ -119,7 +119,7 @@ export class TasksService {
     // await this.dataRepository.archive({ createdAt: { $lt: ninetyDaysAgo } });
     
     await new Promise(resolve => setTimeout(resolve, 100));
-    this.logger.log('✅ Data archived');
+    this.logger.log('Data archived');
   }
 
   /**
@@ -141,7 +141,7 @@ export class TasksService {
     // }
     
     await new Promise(resolve => setTimeout(resolve, 100));
-    this.logger.log('✅ Notifications processed');
+    this.logger.log('Notifications processed');
   }
 
   /**
@@ -155,7 +155,7 @@ export class TasksService {
     // await this.dataRepository.sync(externalData);
     
     await new Promise(resolve => setTimeout(resolve, 100));
-    this.logger.log('✅ External data synced');
+    this.logger.log('External data synced');
   }
 
   /**
@@ -196,7 +196,7 @@ export class TasksService {
     //   data: report
     // });
     
-    this.logger.log(`📧 Report sent: ${JSON.stringify(report)}`);
+    this.logger.log(`Report sent: ${JSON.stringify(report)}`);
   }
 
   /**
@@ -211,7 +211,7 @@ export class TasksService {
     //   await this.processQueueItem(item);
     // }
     
-    this.logger.log('✅ Queue processed');
+    this.logger.log('Queue processed');
   }
 }
 

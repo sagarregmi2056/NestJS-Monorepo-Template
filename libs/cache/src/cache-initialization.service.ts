@@ -29,7 +29,7 @@ export class CacheInitializationService implements OnModuleInit {
     };
 
     if (config.enabled) {
-      this.logger.log(`✅ Redis cache initialized: ${config.host}:${config.port}`);
+      this.logger.log(`Redis cache initialized: ${config.host}:${config.port}`);
       this.logger.log(`   TTL: ${config.ttl}s | Prefix: ${config.keyPrefix}`);
       
       // Test cache connection
@@ -40,15 +40,15 @@ export class CacheInitializationService implements OnModuleInit {
         await this.cacheManager?.del(testKey);
         
         if (value === 'test') {
-          this.logger.log('   ✅ Cache connection test successful');
+          this.logger.log('   Cache connection test successful');
         } else {
-          this.logger.warn('   ⚠️  Cache connection test failed - using fallback');
+          this.logger.warn('   Cache connection test failed - using fallback');
         }
       } catch (error) {
-        this.logger.warn(`   ⚠️  Cache connection test error: ${error instanceof Error ? error.message : error}`);
+        this.logger.warn(`   Cache connection test error: ${error instanceof Error ? error.message : error}`);
       }
     } else {
-      this.logger.log('💾 In-memory cache initialized');
+      this.logger.log('In-memory cache initialized');
       this.logger.log(`   TTL: ${config.ttl}s | Max items: ${config.max || 100}`);
     }
   }

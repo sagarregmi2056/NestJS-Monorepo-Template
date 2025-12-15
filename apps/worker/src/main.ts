@@ -17,22 +17,22 @@ async function bootstrap() {
   const app = await NestFactory.createApplicationContext(AppModule);
   const logger = new Logger('Worker');
 
-  logger.log('🚀 Worker service is running...');
-  logger.log('📋 Scheduled tasks are active');
-  logger.log('💡 This worker has no HTTP server - it only runs background tasks');
+  logger.log('Worker service is running...');
+  logger.log('Scheduled tasks are active');
+  logger.log('This worker has no HTTP server - it only runs background tasks');
 
   // Graceful shutdown
   process.on('SIGINT', async () => {
-    logger.log('⚠️  Received SIGINT, shutting down gracefully...');
+    logger.log('Received SIGINT, shutting down gracefully...');
     await app.close();
-    logger.log('✅ Worker shut down complete');
+    logger.log('Worker shut down complete');
     process.exit(0);
   });
 
   process.on('SIGTERM', async () => {
-    logger.log('⚠️  Received SIGTERM, shutting down gracefully...');
+    logger.log('Received SIGTERM, shutting down gracefully...');
     await app.close();
-    logger.log('✅ Worker shut down complete');
+    logger.log('Worker shut down complete');
     process.exit(0);
   });
 }

@@ -1,5 +1,5 @@
 import { NestFactory } from '@nestjs/core';
-import { ValidationPipe } from '@nestjs/common';
+import { ValidationPipe, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { AppModule } from './app.module';
 import { HttpExceptionFilter } from '@app/common';
@@ -7,11 +7,13 @@ import { setupSwagger } from '@app/swagger';
 import { validateEnvByNodeEnv } from '@app/configuration';
 
 async function bootstrap() {
+  const logger = new Logger('Bootstrap');
+
   // Validate environment variables before starting the app
   try {
     validateEnvByNodeEnv(process.env);
   } catch (error) {
-    console.error(error.message);
+    logger.error(error.message, error.stack);
     process.exit(1);
   }
 
@@ -48,9 +50,9 @@ async function bootstrap() {
   const port = parseInt(process.env.API_SERVER_PORT || process.env.PORT || '3001', 10);
   await app.listen(port);
 
-  console.log(`🚀 Application is running on: http://localhost:${port}/${apiPrefix}`);
-  console.log(`📊 Environment: ${configService.get<string>('app.env')}`);
-  console.log(`💾 Database: ${configService.get<string>('database.type')}`);
+  logger.log(`Application is running on: http://localhost:${port}/${apiPrefix}`);
+  logger.log(`Environment: ${configService.get<string>('app.env')}`);
+  logger.log(`Database: ${configService.get<string>('database.type')}`);
 }
 
 bootstrap();

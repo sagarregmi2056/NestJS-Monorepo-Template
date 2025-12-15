@@ -1,5 +1,5 @@
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { INestApplication } from '@nestjs/common';
+import { INestApplication, Logger } from '@nestjs/common';
 
 /**
  * Swagger Configuration
@@ -19,6 +19,7 @@ import { INestApplication } from '@nestjs/common';
  * ```
  */
 export function setupSwagger(app: INestApplication): void {
+  const logger = new Logger('Swagger');
   const config = new DocumentBuilder()
     .setTitle(process.env.SWAGGER_TITLE || 'NestJS API')
     .setDescription(process.env.SWAGGER_DESCRIPTION || 'API Documentation')
@@ -64,9 +65,9 @@ export function setupSwagger(app: INestApplication): void {
       `,
     });
 
-    console.log(`📚 Swagger documentation available at: http://localhost:${process.env.PORT || 3000}/${swaggerPath}`);
+    logger.log(`Swagger documentation available at: http://localhost:${process.env.PORT || 3000}/${swaggerPath}`);
   } else {
-    console.log('📚 Swagger is disabled in production. Set ENABLE_SWAGGER=true to enable.');
+    logger.log('Swagger is disabled in production. Set ENABLE_SWAGGER=true to enable.');
   }
 }
 
