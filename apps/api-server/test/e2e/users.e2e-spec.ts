@@ -14,37 +14,36 @@ describe('UsersController (e2e)', () => {
   let mockUserRepository: any;
 
   beforeAll(async () => {
-    // Mock Mongoose model
-    mockUserModel = {
-      create: jest.fn().mockImplementation((dto) => {
-        const user = {
-          ...dto,
+    // Mock Mongoose model - needs to be a constructor function
+    const MockUserModel: any = jest.fn().mockImplementation((dto) => ({
+      ...dto,
+      _id: '123',
+      id: '123',
+      save: jest.fn().mockResolvedValue({
+        _id: '123',
+        id: '123',
+        ...dto,
+        createdAt: new Date(),
+        toObject: jest.fn().mockReturnValue({
           _id: '123',
-          save: jest.fn().mockResolvedValue({
-            _id: '123',
-            id: '123',
-            ...dto,
-            createdAt: new Date(),
-            toObject: jest.fn().mockReturnValue({
-              _id: '123',
-              id: '123',
-              ...dto,
-              createdAt: new Date(),
-            }),
-          }),
-        };
-        return user;
+          id: '123',
+          ...dto,
+          createdAt: new Date(),
+        }),
       }),
-      find: jest.fn().mockReturnValue({
-        exec: jest.fn().mockResolvedValue([]),
-      }),
-      findById: jest.fn().mockReturnValue({
-        exec: jest.fn().mockResolvedValue(null),
-      }),
-      findOne: jest.fn().mockReturnValue({
-        exec: jest.fn().mockResolvedValue(null),
-      }),
-    };
+    }));
+
+    MockUserModel.find = jest.fn().mockReturnValue({
+      exec: jest.fn().mockResolvedValue([]),
+    });
+    MockUserModel.findById = jest.fn().mockReturnValue({
+      exec: jest.fn().mockResolvedValue(null),
+    });
+    MockUserModel.findOne = jest.fn().mockReturnValue({
+      exec: jest.fn().mockResolvedValue(null),
+    });
+
+    mockUserModel = MockUserModel;
 
     // Mock TypeORM repository
     mockUserRepository = {
@@ -110,20 +109,6 @@ describe('UsersController (e2e)', () => {
         email: 'john.doe@example.com',
       };
 
-      // Setup mock to return saved user
-      const savedUser = {
-        _id: '123',
-        id: '123',
-        ...createUserDto,
-        createdAt: new Date(),
-      };
-
-      mockUserModel.create.mockReturnValueOnce({
-        ...createUserDto,
-        _id: '123',
-        save: jest.fn().mockResolvedValue(savedUser),
-      });
-
       return request(app.getHttpServer())
         .post('/api/users')
         .send(createUserDto)
@@ -180,7 +165,7 @@ describe('UsersController (e2e)', () => {
         email: 'test@example.com',
       };
 
-      // Setup mock for create
+      // Setup mock for findById to return the created user
       const savedUser = {
         _id: '123',
         id: '123',
@@ -188,13 +173,6 @@ describe('UsersController (e2e)', () => {
         createdAt: new Date(),
       };
 
-      mockUserModel.create.mockReturnValueOnce({
-        ...createUserDto,
-        _id: '123',
-        save: jest.fn().mockResolvedValue(savedUser),
-      });
-
-      // Setup mock for findById
       mockUserModel.findById.mockReturnValueOnce({
         exec: jest.fn().mockResolvedValue(savedUser),
       });
@@ -219,11 +197,16 @@ describe('UsersController (e2e)', () => {
     });
 
     it('should return empty object for non-existent user', () => {
+      // Ensure findById returns null for non-existent user
+      mockUserModel.findById.mockReturnValueOnce({
+        exec: jest.fn().mockResolvedValue(null),
+      });
+
       return request(app.getHttpServer())
         .get('/api/users/non-existent-id')
         .expect(200)
         .expect((res) => {
-          // NestJS serializes undefined as empty object {}
+          // NestJS serializes null/undefined as empty object {}
           expect(res.body).toEqual({});
         });
     });
