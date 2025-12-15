@@ -35,7 +35,7 @@ import { AuthModule } from './auth/auth.module';
 
     // Feature modules
     HealthModule,
-    UsersModule,
+    UsersModule.forRoot(),
     AuthModule,
   ],
   providers: [

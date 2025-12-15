@@ -6,7 +6,7 @@ import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { UsersModule } from '../users/users.module';
-import { jwtConfig } from '@app/configuration';
+
 
 /**
  * Auth Module
@@ -22,7 +22,7 @@ import { jwtConfig } from '@app/configuration';
  */
 @Module({
   imports: [
-    UsersModule,
+    UsersModule.forRoot(), // Import dynamic UsersModule
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.registerAsync({
       imports: [ConfigModule],

@@ -55,8 +55,8 @@ const baseSchema = Joi.object({
     .description('CORS credentials'),
 
   // JWT Configuration
-  JWT_SECRET: Joi.string().min(32).optional().description('JWT secret key'),
-  JWT_REFRESH_SECRET: Joi.string().min(32).optional().description('JWT refresh secret key'),
+  JWT_SECRET: Joi.string().optional().description('JWT secret key'),
+  JWT_REFRESH_SECRET: Joi.string().optional().description('JWT refresh secret key'),
   JWT_EXPIRES_IN: Joi.string().default('1h').description('JWT expiration time'),
   JWT_REFRESH_EXPIRES_IN: Joi.string()
     .default('7d')
