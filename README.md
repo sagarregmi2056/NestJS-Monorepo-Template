@@ -884,6 +884,31 @@ ADMIN_PORT=3002
 
 See [PORT_CONFIGURATION.md](./PORT_CONFIGURATION.md) for detailed guide and [PORT_CONFLICT_WARNING.md](./PORT_CONFLICT_WARNING.md) for conflict prevention.
 
+## 🪝 Git Hooks (Husky)
+
+This template includes **Husky** for Git hooks to ensure code quality before commits.
+
+### Pre-commit Hook
+
+Automatically runs on every commit:
+
+- **ESLint** - Lints staged TypeScript files and auto-fixes issues
+- **Prettier** - Formats staged files (`.ts`, `.json`, `.md`)
+
+### Configuration
+
+The pre-commit hook is configured in `.husky/pre-commit` and uses `lint-staged` to only process staged files, making it fast and efficient.
+
+### Disabling Hooks (if needed)
+
+To skip hooks for a single commit:
+
+```bash
+git commit --no-verify -m "your message"
+```
+
+**Note:** Only use `--no-verify` when absolutely necessary, as it bypasses code quality checks.
+
 ## 🔄 CI/CD Pipeline
 
 This template includes a comprehensive GitHub Actions CI/CD pipeline that runs automatically on every push and pull request.
